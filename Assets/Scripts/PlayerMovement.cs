@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float speed = 10;
-
+    [SerializeField] List<Color> colors;
 
     RaycastHit wall;
     Rigidbody playerRb;
@@ -39,15 +39,16 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         playerRb = GetComponent<Rigidbody>();
         GameManager.Instance.player = GetComponent<PlayerMovement>();
 
         SetamountOfFloor();
 
         //Setting a random color for player...
-        color = new Color(r: UnityEngine.Random.Range(0F, 1F), g: UnityEngine.Random.Range(0F, 1F), b: UnityEngine.Random.Range(0F, 1F));
+        color = colors[UnityEngine.Random.Range(0,colors.Count)];
         player.GetComponent<Renderer>().material.color = color;
-        playerColor = player.GetComponent<Renderer>().material.color;
+        playerColor = color;
     }
 
     // Update is called once per frame
@@ -250,8 +251,9 @@ public class PlayerMovement : MonoBehaviour
 
                 moveDirection = new Vector2(lastPosition.x - firstPosition.x, lastPosition.y - firstPosition.y).normalized;
 
-                if (!isMovementForward && (MathF.Abs(moveDirection.y) > 0.75f || Mathf.Abs(moveDirection.x) > 0.75f))
+                if (!isMovementForward && (MathF.Abs(moveDirection.y) > 0.3f || Mathf.Abs(moveDirection.x) > 0.3f))
                 {
+                    Debug.Log(MathF.Abs(moveDirection.y));
                     isMovementForward = true;
 
                     if (isVerticalMovementChecked == false)

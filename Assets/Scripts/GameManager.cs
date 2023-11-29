@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
     {
 
 
-
         if (Instance != null)
         {
 
@@ -58,6 +57,7 @@ public class GameManager : MonoBehaviour
 
         level.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
 
+        gameOver.gameObject.SetActive(false);
 
     }
 
@@ -83,14 +83,17 @@ public class GameManager : MonoBehaviour
         {
             levelCompleted.gameObject.SetActive(true);
             isLevelCompleted = true;
-            if(SceneManager.GetActiveScene().buildIndex == 9)
-            {
-                gameOver.gameObject.SetActive(true);
-            }
-            gameOver.gameObject.SetActive(false);
+            
+          
+
+
 
             Confetti();
             StartCoroutine(countDown());
+            if (SceneManager.GetActiveScene().buildIndex == 9)
+            {
+                gameOver.gameObject.SetActive(true);
+            }
 
             if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
             {
@@ -139,6 +142,8 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+        gameOver.gameObject.SetActive(false);
+
     }
 
     public void LoadLevelGrid()
@@ -173,6 +178,7 @@ public class GameManager : MonoBehaviour
 
 
 
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
         level.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 2).ToString();
@@ -181,6 +187,7 @@ public class GameManager : MonoBehaviour
         panel.gameObject.SetActive(true);
         levelCompleted.gameObject.SetActive(false);
         isButtonClicked = false;
+        gameOver.gameObject.SetActive(false);
 
     }
 
