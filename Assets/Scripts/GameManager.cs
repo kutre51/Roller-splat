@@ -33,12 +33,13 @@ public class GameManager : MonoBehaviour
     int index = 1;
 
     public Button[] button;
+    public GameObject levelButtons;
 
     // Start is called before the first frame update
     void Awake()
     {
 
-
+        ButtonsToArrray();
         if (Instance != null)
         {
 
@@ -83,8 +84,8 @@ public class GameManager : MonoBehaviour
         {
             levelCompleted.gameObject.SetActive(true);
             isLevelCompleted = true;
-            
-          
+
+
 
 
 
@@ -114,7 +115,15 @@ public class GameManager : MonoBehaviour
 
     }
 
-
+    void ButtonsToArrray()
+    {
+        int childCount = levelButtons.transform.childCount;
+        button = new Button[childCount];
+        for(int i = 0; i < childCount;i++)
+        {
+            button[i] = levelButtons.transform.GetChild(i).GetComponent<Button>();
+        }
+    }
 
     void Confetti()
     {
@@ -142,7 +151,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
-        gameOver.gameObject.SetActive(false);
+        gameOver.SetActive(false);
 
     }
 
@@ -177,17 +186,24 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
 
+        if (SceneManager.GetActiveScene().buildIndex < 9)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
+            level.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 2).ToString();
+            isLevelCompleted = false;
+            panel.gameObject.SetActive(true);
+            levelCompleted.gameObject.SetActive(false);
+            isButtonClicked = false;
+            gameOver.gameObject.SetActive(false);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
 
-        level.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 2).ToString();
-
-        isLevelCompleted = false;
         panel.gameObject.SetActive(true);
+
         levelCompleted.gameObject.SetActive(false);
-        isButtonClicked = false;
-        gameOver.gameObject.SetActive(false);
+
+
 
     }
 
